@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TauTimp Orbital Atlas</title>
+<meta name="description" content="Interactive 3D visualization of every hydrogenic s, p, d, f orbital, comparing the stationary Schrödinger state with the pulsating TauTimp unduscular wave.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<style>
+  :root{
+    --bg-deep:#05060c;
+    --bg:#0a0d17;
+    --panel:rgba(18,22,38,.74);
+    --panel-strong:rgba(22,27,46,.92);
+    --border:rgba(140,148,255,.20);
+    --border-soft:rgba(140,148,255,.12);
+    --text:#eef0fa;
+    --text-muted:#8d96b8;
+    --text-faint:#5c6486;
+    --gold:#f4b942;
+    --gold-dim:#9c7c3f;
+    --violet:#8288ff;
+    --violet-dim:#5f63a8;
+    --teal:#49d9c6;
+    --teal-dim:#2f7a71;
+    --radius-lg:16px;
+    --radius-md:11px;
+    --radius-sm:7px;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{background:var(--bg-deep);}
+  body{
+    margin:0;
+    color:var(--text);
+    font-family:'Manrope',system-ui,-apple-system,'Segoe UI',sans-serif;
+    background:var(--bg-deep);
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Fraunces',Georgia,serif; text-wrap:balance; margin:0;}
+  code,.mono{font-family:'JetBrains Mono',ui-monospace,Consolas,monospace;}
+
+  #app{
+    display:grid;
+    grid-template-columns: 336px 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "top top"
+      "controls stage";
+    gap:14px;
+    padding:16px;
+    min-height:100dvh;
+  }
+
+  .top{
+    grid-area:top;
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    flex-wrap:wrap;
+    padding:14px 18px;
+    background:var(--panel);
+    border:1px solid var(--border-soft);
+    border-radius:var(--radius-lg);
+    backdrop-filter:blur(14px);
+  }
+  .top .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--teal);
+    white-space:nowrap;
+  }
+  .top h1{font-size:22px; font-weight:600; color:var(--text); white-space:nowrap;}
+  .top .sub{
+    font-size:13.5px;
+    color:var(--text-muted);
+    font-style:italic;
+    font-family:'Fraunces',serif;
+    flex:1 1 260px;
+    min-width:0;
+  }
+
+  .controls{
+    grid-area:controls;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    overflow-y:auto;
+    padding-right:2px;
+  }
+
+  .card{
+    background:var(--panel);
+    border:1px solid var(--border-soft);
+    border-radius:var(--radius-lg);
+    padding:16px;
+    backdrop-filter:blur(14px);
+  }
+  .card h2{
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:var(--text-muted);
+    font-family:'Manrope',sans-serif;
+    margin-bottom:10px;
+  }
+
+  .group-label{
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--text-faint);
+    margin:12px 0 6px;
+  }
+  .group-label:first-child{margin-top:0;}
+
+  .btn-row{display:flex; flex-wrap:wrap; gap:8px;}
+  .btn{
+    appearance:none;
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.02);
+    color:var(--text);
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    padding:8px 13px;
+    border-radius:var(--radius-sm);
+    cursor:pointer;
+    transition:background .15s, border-color .15s, color .15s;
+  }
+  .btn:hover{border-color:var(--violet); background:rgba(130,136,255,.08);}
+  .btn:focus-visible{outline:2px solid var(--teal); outline-offset:2px;}
+  .btn.active{
+    background:linear-gradient(135deg, rgba(244,185,66,.18), rgba(130,136,255,.18));
+    border-color:var(--gold);
+    color:var(--gold);
+  }
+  .btn.family-btn{ min-width:44px; text-align:center; font-family:'Fraunces',serif; font-size:15px; font-weight:600; }
+
+  .mode-row{display:flex; gap:8px;}
+  .mode-btn{
+    flex:1;
+    text-align:left;
+    padding:11px 12px;
+    border-radius:var(--radius-md);
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.02);
+    color:var(--text);
+    cursor:pointer;
+    font-family:'Manrope',sans-serif;
+  }
+  .mode-btn strong{display:block; font-size:13px; font-family:'Fraunces',serif; font-weight:600;}
+  .mode-btn span{display:block; font-size:10.5px; color:var(--text-faint); margin-top:2px; font-family:'JetBrains Mono',monospace;}
+  .mode-btn:hover{border-color:var(--teal);}
+  .mode-btn.active[data-mode="schrodinger"]{border-color:var(--gold); background:rgba(244,185,66,.10);}
+  .mode-btn.active[data-mode="schrodinger"] strong{color:var(--gold);}
+  .mode-btn.active[data-mode="unduscular"]{border-color:var(--teal); background:rgba(73,217,198,.10);}
+  .mode-btn.active[data-mode="unduscular"] strong{color:var(--teal);}
+
+  .mode-desc{
+    font-size:12.5px;
+    line-height:1.55;
+    color:var(--text-muted);
+    margin-top:11px;
+    padding-top:11px;
+    border-top:1px solid var(--border-soft);
+  }
+
+  .transport{display:flex; align-items:center; gap:10px; margin-top:12px;}
+  .icon-btn{
+    width:34px; height:34px; flex:0 0 auto;
+    border-radius:50%;
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.03);
+    color:var(--text);
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    font-size:14px;
+  }
+  .icon-btn:hover{border-color:var(--gold);}
+  .speed-wrap{flex:1; display:flex; align-items:center; gap:8px;}
+  .speed-wrap input[type=range]{flex:1; accent-color:var(--gold);}
+  #speed-value{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-muted); width:38px; text-align:right; font-variant-numeric:tabular-nums;}
+
+  .legend{display:flex; gap:16px; flex-wrap:wrap; margin-top:2px;}
+  .legend-item{display:flex; align-items:center; gap:7px; font-size:12px; color:var(--text-muted);}
+  .swatch{width:10px; height:10px; border-radius:50%; flex:0 0 auto;}
+
+  .readout-grid{display:grid; grid-template-columns:1fr 1fr; gap:9px 14px; font-family:'JetBrains Mono',monospace;}
+  .readout-item .k{font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--text-faint);}
+  .readout-item .v{font-size:15px; color:var(--text); font-variant-numeric:tabular-nums; margin-top:1px;}
+  .readout-item .v.accent{color:var(--gold);}
+
+  .widget-box{
+    margin-top:13px;
+    padding-top:13px;
+    border-top:1px solid var(--border-soft);
+  }
+  .widget-title{font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; color:var(--text-faint); margin-bottom:8px;}
+
+  /* phase dial (Schrodinger) */
+  #widget-schrodinger{display:flex; align-items:center; gap:14px;}
+  .dial{width:56px; height:56px; position:relative; flex:0 0 auto;}
+  .dial svg{width:100%; height:100%; display:block;}
+  .dial-hand{
+    transform-origin:28px 28px;
+    animation:spin 6s linear infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  #widget-schrodinger .exp{font-size:12px; color:var(--text-muted); line-height:1.5;}
+  #widget-schrodinger .exp code{color:var(--gold);}
+
+  /* oscilloscope (unduscular) */
+  #widget-unduscular{}
+  .osc-frame{
+    position:relative;
+    width:100%;
+    height:52px;
+    overflow:hidden;
+    border-radius:var(--radius-sm);
+    background:rgba(0,0,0,.3);
+    border:1px solid var(--border-soft);
+  }
+  .osc-track{
+    position:absolute;
+    top:0; left:0;
+    height:100%;
+    width:200%;
+    animation:scroll-left 3.6s linear infinite;
+  }
+  @keyframes scroll-left{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+  .osc-mid{position:absolute; left:0; right:0; top:50%; height:1px; background:var(--border-soft);}
+  #osc-value{
+    margin-top:7px;
+    font-size:12px;
+    color:var(--teal);
+    font-variant-numeric:tabular-nums;
+  }
+
+  .credit{font-size:11px; color:var(--text-faint); line-height:1.6;}
+
+  .stage{
+    grid-area:stage;
+    position:relative;
+    border-radius:var(--radius-lg);
+    overflow:hidden;
+    border:1px solid var(--border-soft);
+    background:var(--bg-deep);
+    min-height:440px;
+  }
+  #scene{position:absolute; inset:0; width:100%; height:100%; display:block; touch-action:none; cursor:grab;}
+  #scene:active{cursor:grabbing;}
+
+  .hint{
+    position:absolute;
+    left:16px; bottom:14px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--text-faint);
+    background:rgba(5,6,12,.5);
+    padding:5px 9px;
+    border-radius:20px;
+    border:1px solid var(--border-soft);
+    pointer-events:none;
+  }
+
+  #loading{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    flex-direction:column; gap:10px;
+    background:rgba(5,6,12,.72);
+    backdrop-filter:blur(3px);
+    transition:opacity .25s;
+  }
+  #loading.hidden{opacity:0; pointer-events:none;}
+  .spinner{
+    width:26px; height:26px;
+    border-radius:50%;
+    border:2px solid var(--border);
+    border-top-color:var(--gold);
+    animation:spin 0.9s linear infinite;
+  }
+  #loading p{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-muted);}
+
+  @media (max-width: 860px){
+    #app{
+      grid-template-columns:1fr;
+      grid-template-rows:auto auto auto;
+      grid-template-areas:
+        "top"
+        "stage"
+        "controls";
+    }
+    .stage{min-height:56vh;}
+    .top h1{font-size:19px;}
+    .top .sub{font-size:12.5px;}
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <span class="eyebrow">TauTimp &middot; Electron Equation</span>
+    <h1>TauTimp Orbital Atlas</h1>
+    <p class="sub">Every hydrogenic orbital — s, p, d, f — with an identical spatial shape (Taylor-verified, §4), but two different time dynamics: the stationary Schrödinger state vs. the pulsating unduscular wave.</p>
+  </header>
+
+  <aside class="controls">
+    <div class="card">
+      <h2>Family</h2>
+      <div class="btn-row" id="family-row">
+        <button class="btn family-btn" data-family="s">s</button>
+        <button class="btn family-btn" data-family="p">p</button>
+        <button class="btn family-btn" data-family="d">d</button>
+        <button class="btn family-btn" data-family="f">f</button>
+      </div>
+
+      <div class="group-label">Shell (n)</div>
+      <div class="btn-row" id="shell-row"></div>
+
+      <div id="orientation-group">
+        <div class="group-label">Orientation</div>
+        <div class="btn-row" id="orientation-row"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Dynamic model</h2>
+      <div class="mode-row">
+        <button class="mode-btn" data-mode="schrodinger">
+          <strong>Schrödinger</strong>
+          <span>stationary state</span>
+        </button>
+        <button class="mode-btn" data-mode="unduscular">
+          <strong>Unduscular</strong>
+          <span>TauTimp wave</span>
+        </button>
+      </div>
+      <p class="mode-desc" id="mode-desc"></p>
+
+      <div class="transport">
+        <button class="icon-btn" id="play-toggle" aria-label="Play or pause the animation">⏸</button>
+        <div class="speed-wrap">
+          <input type="range" id="speed-range" min="0.25" max="3" step="0.25" value="1" aria-label="Schematic animation speed">
+          <span id="speed-value" class="mono">1.0×</span>
+        </div>
+      </div>
+
+      <div class="widget-box">
+        <div class="widget-title" id="widget-label">Phase clock e<sup>−iEt/ħ</sup></div>
+        <div id="widget-schrodinger">
+          <div class="dial">
+            <svg viewBox="0 0 56 56">
+              <circle cx="28" cy="28" r="25" fill="none" stroke="var(--border)" stroke-width="1.5"/>
+              <g class="dial-hand" id="dial-hand">
+                <line x1="28" y1="28" x2="28" y2="6" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round"/>
+              </g>
+              <circle cx="28" cy="28" r="2.4" fill="var(--gold)"/>
+            </svg>
+          </div>
+          <p class="exp">|ψ|² stays constant &mdash; only the global phase <code>e^{-iEt/ħ}</code> rotates, a quantity with no direct observable effect.</p>
+        </div>
+        <div id="widget-unduscular" style="display:none;">
+          <div class="osc-frame">
+            <div class="osc-track" id="osc-track">
+              <svg viewBox="0 0 400 52" preserveAspectRatio="none" width="100%" height="100%">
+                <path d="M0,26 C 12.5,4 37.5,4 50,26 S 87.5,48 100,26 S 137.5,4 150,26 S 187.5,48 200,26 S 237.5,4 250,26 S 287.5,48 300,26 S 337.5,4 350,26 S 387.5,48 400,26" fill="none" stroke="var(--teal)" stroke-width="2"/>
+              </svg>
+            </div>
+            <div class="osc-mid"></div>
+          </div>
+          <div id="osc-value" class="mono">u(t) = cos(ωt) = 1.00</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Current state</h2>
+      <div class="readout-grid">
+        <div class="readout-item"><div class="k">Orbital</div><div class="v accent" id="ro-label">1s</div></div>
+        <div class="readout-item"><div class="k">n, l</div><div class="v" id="ro-nl">1, 0</div></div>
+        <div class="readout-item"><div class="k">Energy E<sub>n</sub></div><div class="v" id="ro-energy">−13.6057 eV</div></div>
+        <div class="readout-item"><div class="k">Sample radius</div><div class="v" id="ro-box">7 a₀</div></div>
+        <div class="readout-item"><div class="k">Points |ψ|²</div><div class="v" id="ro-count">–</div></div>
+        <div class="readout-item"><div class="k">Model</div><div class="v" id="ro-model">Schrödinger</div></div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="swatch" style="background:var(--gold);"></span>positive lobe / shell</div>
+        <div class="legend-item"><span class="swatch" style="background:var(--violet);"></span>negative lobe / shell</div>
+      </div>
+    </div>
+
+    <p class="credit">Radial part R<sub>nl</sub>(r) computed generally via associated Laguerre polynomials (∝ e<sup>−r/n</sup>ρ<sup>l</sup>L<sub>n−l−1</sub><sup>2l+1</sup>(ρ), ρ=2r/n); angular part from the real Cartesian solid harmonics (s,p,d,f). Cloud sampled by Monte&nbsp;Carlo from |ψ|²; the fine shells in unduscular mode represent — exaggerated, for visibility — the periodic zero structure at the Compton scale (§12). Derived from <code>electron_TauTimp_final_RO.md</code>, §4 and §11–12 (Popescu, 2026).</p>
+  </aside>
+
+  <div class="stage">
+    <canvas id="scene"></canvas>
+    <div id="loading"><div class="spinner"></div><p>sampling the probability cloud…</p></div>
+    <div class="hint">drag to rotate &middot; scroll to zoom</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- general hydrogenic radial shape (Laguerre-based, unnormalized) ----------
+  function factorial(k){ let f=1; for(let i=2;i<=k;i++) f*=i; return f; }
+
+  function genLaguerre(k, alpha, x){
+    if(k<=0) return 1;
+    if(k===1) return 1+alpha-x;
+    let Lkm2=1, Lkm1=1+alpha-x, Lk=Lkm1;
+    for(let i=2;i<=k;i++){
+      Lk = ((2*i-1+alpha-x)*Lkm1 - (i-1+alpha)*Lkm2)/i;
+      Lkm2=Lkm1; Lkm1=Lk;
+    }
+    return Lk;
+  }
+
+  // proportional to the true R_nl(r) (a0=1); normalization constant is always
+  // positive and irrelevant for Monte-Carlo rejection sampling of |psi|^2.
+  function Rshape(n, l, r){
+    const rho = 2*r/n;
+    const k = n-l-1;
+    const L = genLaguerre(k, 2*l+1, rho);
+    return Math.exp(-r/n) * Math.pow(rho, l) * L;
+  }
+
+  function boxFor(n, l){
+    const disc = Math.max(n*n - l*(l+1), 0);
+    const rOuter = n*n + n*Math.sqrt(disc);
+    return Math.max(7, 1.6*rOuter + 4);
+  }
+
+  // ---------- real angular parts (Cartesian solid harmonics), l = 0..3 ----------
+  const LETTER = { 0:'s', 1:'p', 2:'d', 3:'f' };
+  const SHELLS = { s:[1,2,3,4], p:[2,3,4,5], d:[3,4,5,6], f:[4,5,6] };
+  const ANGULARS = {
+    s: [ { suffix:'', A:function(){ return 1; } } ],
+    p: [
+      { suffix:'z', A:function(x,y,z,r){ return z/(r||1e-9); } },
+      { suffix:'x', A:function(x,y,z,r){ return x/(r||1e-9); } },
+      { suffix:'y', A:function(x,y,z,r){ return y/(r||1e-9); } }
+    ],
+    d: [
+      { suffix:'z²',    A:function(x,y,z,r){ return (2*z*z-x*x-y*y)/(r*r||1e-9); } },
+      { suffix:'xz',    A:function(x,y,z,r){ return (x*z)/(r*r||1e-9); } },
+      { suffix:'yz',    A:function(x,y,z,r){ return (y*z)/(r*r||1e-9); } },
+      { suffix:'x²−y²', A:function(x,y,z,r){ return (x*x-y*y)/(r*r||1e-9); } },
+      { suffix:'xy',    A:function(x,y,z,r){ return (x*y)/(r*r||1e-9); } }
+    ],
+    f: [
+      { suffix:'z³',        A:function(x,y,z,r){ return (z*(5*z*z-3*r*r))/(r*r*r||1e-9); } },
+      { suffix:'xz²',       A:function(x,y,z,r){ return (x*(5*z*z-r*r))/(r*r*r||1e-9); } },
+      { suffix:'yz²',       A:function(x,y,z,r){ return (y*(5*z*z-r*r))/(r*r*r||1e-9); } },
+      { suffix:'xyz',       A:function(x,y,z,r){ return (x*y*z)/(r*r*r||1e-9); } },
+      { suffix:'z(x²−y²)',  A:function(x,y,z,r){ return (z*(x*x-y*y))/(r*r*r||1e-9); } },
+      { suffix:'x(x²−3y²)', A:function(x,y,z,r){ return (x*(x*x-3*y*y))/(r*r*r||1e-9); } },
+      { suffix:'y(3x²−y²)', A:function(x,y,z,r){ return (y*(3*x*x-y*y))/(r*r*r||1e-9); } }
+    ]
+  };
+
+  const MODE_DESC = {
+    schrodinger: 'The Schrödinger state is stationary: the density |ψ|² does not depend on time. Only the global complex phase e^{-iEt/ħ} rotates (dial alongside) — the cloud\'s shape and position stay unchanged.',
+    unduscular: 'The unduscular field f(r,t)=g(r)·cos(ωt) is a real, standing wave: its amplitude pulses through zero across the whole cloud at once (see the u(t) oscilloscope). The cloud breathes — it fades out and reappears every half-period.'
+  };
+
+  // ---------- state ----------
+  let currentFamily = 's';
+  let currentN = 1;
+  let currentAngIndex = 0;
+  let currentMode = 'schrodinger';
+  let playing = true;
+  let speedMultiplier = 1;
+  let simTime = 0;
+  const OMEGA_BASE = 1.35;
+
+  function currentSpec(){
+    const l = { s:0, p:1, d:2, f:3 }[currentFamily];
+    const ang = ANGULARS[currentFamily][currentAngIndex];
+    const n = currentN;
+    return {
+      n: n, l: l,
+      label: n + LETTER[l] + (ang.suffix ? ('_' + ang.suffix) : ''),
+      R: function(r){ return Rshape(n, l, r); },
+      A: ang.A,
+      box: boxFor(n, l)
+    };
+  }
+
+  // ---------- three.js setup ----------
+  const canvas = document.getElementById('scene');
+  const stage = document.querySelector('.stage');
+  const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias:true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x05060c);
+
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 800);
+
+  const goldColor = new THREE.Color(0xf4b942);
+  const violetColor = new THREE.Color(0x8288ff);
+
+  (function buildStars(){
+    const N = 500;
+    const pos = new Float32Array(N*3);
+    for(let i=0;i<N;i++){
+      const r = 70 + Math.random()*120;
+      const th = Math.random()*Math.PI*2;
+      const ph = Math.acos(2*Math.random()-1);
+      pos[i*3] = r*Math.sin(ph)*Math.cos(th);
+      pos[i*3+1] = r*Math.cos(ph);
+      pos[i*3+2] = r*Math.sin(ph)*Math.sin(th);
+    }
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(pos,3));
+    const mat = new THREE.PointsMaterial({ color:0x4b5480, size:0.5, sizeAttenuation:true, transparent:true, opacity:0.35, depthWrite:false });
+    scene.add(new THREE.Points(geo, mat));
+  })();
+
+  let cloudPoints = null;
+  let currentBox = 7;
+
+  const camState = { azimuth:0.7, polar:1.15, distance:16 };
+  let dragging=false, lastX=0, lastY=0;
+
+  function updateCameraPosition(){
+    const d = camState.distance;
+    camera.position.x = d*Math.sin(camState.polar)*Math.sin(camState.azimuth);
+    camera.position.y = d*Math.cos(camState.polar);
+    camera.position.z = d*Math.sin(camState.polar)*Math.cos(camState.azimuth);
+    camera.lookAt(0,0,0);
+  }
+
+  canvas.addEventListener('pointerdown', function(e){
+    dragging = true; lastX = e.clientX; lastY = e.clientY;
+    try{ canvas.setPointerCapture(e.pointerId); }catch(err){}
+  });
+  canvas.addEventListener('pointermove', function(e){
+    if(!dragging) return;
+    const dx = e.clientX - lastX, dy = e.clientY - lastY;
+    lastX = e.clientX; lastY = e.clientY;
+    camState.azimuth -= dx*0.0065;
+    camState.polar -= dy*0.0065;
+    camState.polar = Math.min(Math.max(camState.polar, 0.18), Math.PI-0.18);
+  });
+  window.addEventListener('pointerup', function(){ dragging = false; });
+  canvas.addEventListener('wheel', function(e){
+    e.preventDefault();
+    camState.distance *= (1 + e.deltaY*0.0012);
+    camState.distance = Math.min(Math.max(camState.distance, currentBox*0.7), currentBox*4.5);
+  }, { passive:false });
+
+  function resize(){
+    const w = stage.clientWidth, h = stage.clientHeight;
+    if(w<=0 || h<=0) return;
+    renderer.setSize(w, h, false);
+    camera.aspect = w/h;
+    camera.updateProjectionMatrix();
+  }
+  window.addEventListener('resize', resize);
+  if(window.ResizeObserver){
+    new ResizeObserver(resize).observe(stage);
+  }
+
+  // ---------- Monte Carlo sampling of |psi|^2 ----------
+  function sampleOrbital(spec, done){
+    const box = spec.box;
+    const PRE = 6000, TARGET = 7000, CAP = 7000000, CHUNK = 50000;
+
+    let maxD = 0;
+    for(let i=0;i<PRE;i++){
+      const x=(Math.random()*2-1)*box, y=(Math.random()*2-1)*box, z=(Math.random()*2-1)*box;
+      const r = Math.sqrt(x*x+y*y+z*z);
+      const val = spec.R(r)*spec.A(x,y,z,r);
+      const d2 = val*val;
+      if(d2>maxD) maxD = d2;
+    }
+    maxD *= 1.3;
+    if(maxD<=0) maxD = 1e-12;
+
+    const pos = [], signs = [];
+    let tries = 0;
+
+    function chunk(){
+      let n = 0;
+      while(n<CHUNK && pos.length/3<TARGET && tries<CAP){
+        tries++; n++;
+        const x=(Math.random()*2-1)*box, y=(Math.random()*2-1)*box, z=(Math.random()*2-1)*box;
+        const r = Math.sqrt(x*x+y*y+z*z);
+        const val = spec.R(r)*spec.A(x,y,z,r);
+        const dens = val*val;
+        if(Math.random()*maxD < dens){
+          pos.push(x,y,z);
+          signs.push(val>=0 ? 1 : -1);
+        }
+      }
+      if(pos.length/3<TARGET && tries<CAP){
+        requestAnimationFrame(chunk);
+      } else {
+        done(pos, signs, spec);
+      }
+    }
+    chunk();
+  }
+
+  function buildCloud(pos, signs, spec){
+    const count = signs.length;
+    const positions = new Float32Array(pos);
+    const colors = new Float32Array(count*3);
+    const rippleK = Math.PI*5/spec.box;
+
+    for(let i=0;i<count;i++){
+      const x=positions[i*3], y=positions[i*3+1], z=positions[i*3+2];
+      const r = Math.sqrt(x*x+y*y+z*z);
+      const ripple = 0.45 + 0.55*Math.abs(Math.cos(rippleK*r));
+      const base = signs[i]>=0 ? goldColor : violetColor;
+      colors[i*3]   = base.r*ripple;
+      colors[i*3+1] = base.g*ripple;
+      colors[i*3+2] = base.b*ripple;
+    }
+
+    if(cloudPoints){
+      scene.remove(cloudPoints);
+      cloudPoints.geometry.dispose();
+      cloudPoints.material.dispose();
+    }
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(positions,3));
+    geo.setAttribute('color', new THREE.BufferAttribute(colors,3));
+    const baseSize = Math.max(0.14, spec.box*0.014);
+    const mat = new THREE.PointsMaterial({
+      size: baseSize, vertexColors:true, transparent:true, opacity:1,
+      sizeAttenuation:true, depthWrite:false, blending:THREE.AdditiveBlending
+    });
+    cloudPoints = new THREE.Points(geo, mat);
+    cloudPoints.userData.baseSize = baseSize;
+    scene.add(cloudPoints);
+    currentBox = spec.box;
+    camState.distance = spec.box*2.2;
+
+    document.getElementById('ro-count').textContent = count.toLocaleString('en-US');
+  }
+
+  function setLoading(v){
+    document.getElementById('loading').classList.toggle('hidden', !v);
+  }
+
+  function loadOrbital(){
+    const spec = currentSpec();
+    setLoading(true);
+    sampleOrbital(spec, function(pos, signs, s){
+      buildCloud(pos, signs, s);
+      setLoading(false);
+      updateReadout(s);
+    });
+  }
+
+  // ---------- UI wiring ----------
+  function updateReadout(spec){
+    document.getElementById('ro-label').textContent = spec.label;
+    document.getElementById('ro-nl').textContent = spec.n + ', ' + spec.l;
+    document.getElementById('ro-energy').textContent = (-13.605693/(spec.n*spec.n)).toFixed(4) + ' eV';
+    document.getElementById('ro-box').textContent = spec.box.toFixed(0) + ' a₀';
+    document.getElementById('ro-model').textContent = currentMode==='schrodinger' ? 'Schrödinger' : 'Unduscular (TauTimp)';
+    document.getElementById('mode-desc').textContent = MODE_DESC[currentMode];
+    updateWidgetTiming();
+  }
+
+  function computeOmega(){
+    return OMEGA_BASE/currentN;
+  }
+
+  function updateWidgetTiming(){
+    const omega = computeOmega();
+    const period = (2*Math.PI/omega)/speedMultiplier;
+    const hand = document.getElementById('dial-hand');
+    const track = document.getElementById('osc-track');
+    hand.style.animationDuration = period.toFixed(3)+'s';
+    track.style.animationDuration = period.toFixed(3)+'s';
+    const playState = playing ? 'running' : 'paused';
+    hand.style.animationPlayState = playState;
+    track.style.animationPlayState = playState;
+  }
+
+  function renderShellRow(){
+    const row = document.getElementById('shell-row');
+    row.innerHTML = '';
+    const shells = SHELLS[currentFamily];
+    if(shells.indexOf(currentN)===-1) currentN = shells[0];
+    shells.forEach(function(n){
+      const b = document.createElement('button');
+      b.className = 'btn' + (n===currentN ? ' active' : '');
+      b.textContent = n;
+      b.addEventListener('click', function(){
+        if(n===currentN) return;
+        currentN = n;
+        renderShellRow();
+        loadOrbital();
+      });
+      row.appendChild(b);
+    });
+  }
+
+  function renderOrientationRow(){
+    const group = document.getElementById('orientation-group');
+    const row = document.getElementById('orientation-row');
+    row.innerHTML = '';
+    const list = ANGULARS[currentFamily];
+    group.style.display = list.length>1 ? 'block' : 'none';
+    if(currentAngIndex>=list.length) currentAngIndex = 0;
+    list.forEach(function(ang, idx){
+      const b = document.createElement('button');
+      b.className = 'btn' + (idx===currentAngIndex ? ' active' : '');
+      b.innerHTML = currentFamily + (ang.suffix ? ('<sub>'+ang.suffix+'</sub>') : '');
+      b.addEventListener('click', function(){
+        if(idx===currentAngIndex) return;
+        currentAngIndex = idx;
+        renderOrientationRow();
+        loadOrbital();
+      });
+      row.appendChild(b);
+    });
+  }
+
+  document.querySelectorAll('[data-family]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      const fam = btn.getAttribute('data-family');
+      if(fam===currentFamily) return;
+      currentFamily = fam;
+      currentAngIndex = 0;
+      currentN = SHELLS[fam][0];
+      document.querySelectorAll('[data-family]').forEach(function(b){ b.classList.toggle('active', b===btn); });
+      renderShellRow();
+      renderOrientationRow();
+      loadOrbital();
+    });
+  });
+  document.querySelector('[data-family="s"]').classList.add('active');
+
+  document.querySelectorAll('.mode-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      const mode = btn.getAttribute('data-mode');
+      if(mode===currentMode) return;
+      currentMode = mode;
+      simTime = 0;
+      document.querySelectorAll('.mode-btn').forEach(function(b){ b.classList.toggle('active', b===btn); });
+      document.getElementById('widget-schrodinger').style.display = mode==='schrodinger' ? 'flex' : 'none';
+      document.getElementById('widget-unduscular').style.display = mode==='unduscular' ? 'block' : 'none';
+      document.getElementById('widget-label').innerHTML = mode==='schrodinger'
+        ? 'Phase clock e<sup>−iEt/ħ</sup>'
+        : 'Oscilloscope u(t) = cos(ωt)';
+      updateReadout(currentSpec());
+    });
+  });
+  document.querySelector('[data-mode="schrodinger"]').classList.add('active');
+
+  const playBtn = document.getElementById('play-toggle');
+  playBtn.addEventListener('click', function(){
+    playing = !playing;
+    playBtn.textContent = playing ? '⏸' : '▶';
+    updateWidgetTiming();
+  });
+
+  const speedRange = document.getElementById('speed-range');
+  const speedValue = document.getElementById('speed-value');
+  speedRange.addEventListener('input', function(){
+    speedMultiplier = parseFloat(speedRange.value);
+    speedValue.textContent = speedMultiplier.toFixed(2).replace(/0$/,'').replace(/\.$/,'.0') + '×';
+    updateWidgetTiming();
+  });
+
+  // ---------- render loop ----------
+  const clock = new THREE.Clock();
+  function animate(){
+    requestAnimationFrame(animate);
+    const dt = Math.min(clock.getDelta(), 0.05);
+
+    camState.azimuth += dt*0.05;
+    updateCameraPosition();
+
+    if(playing) simTime += dt*speedMultiplier;
+
+    if(cloudPoints){
+      const omega = computeOmega();
+      if(currentMode==='schrodinger'){
+        cloudPoints.material.opacity = 0.86 + 0.14*Math.cos(omega*simTime*0.5);
+        cloudPoints.material.size = cloudPoints.userData.baseSize;
+      } else {
+        const env = Math.cos(omega*simTime);
+        const envAbs = Math.abs(env);
+        cloudPoints.material.opacity = 0.10 + 0.90*envAbs;
+        cloudPoints.material.size = cloudPoints.userData.baseSize*(0.72+0.38*envAbs);
+        const oscVal = document.getElementById('osc-value');
+        if(oscVal) oscVal.textContent = 'u(t) = cos(ωt) = ' + env.toFixed(2);
+      }
+    }
+
+    renderer.render(scene, camera);
+  }
+
+  resize();
+  updateCameraPosition();
+  renderShellRow();
+  renderOrientationRow();
+  loadOrbital();
+  animate();
+})();
+</script>
+</body>
+</html>

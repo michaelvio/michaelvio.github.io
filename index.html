@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Résumé — Viorel-Mihai Popescu</title>
+<meta name="description" content="Résumé and research page of Viorel-Mihai Popescu — PhD candidate, Onduscular Theory, Quarks Informational Theory.">
+<meta name="author" content="Viorel-Mihai Popescu">
+
+<style>
+/* ============== Base ============== */
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 16px;
+  line-height: 1.55;
+  color: #1a1a1a;
+  background: #f4f1ea url("ifa6.jpg") repeat;
+  background-attachment: fixed;
+}
+
+/* Wrapper for readable content over the patterned background */
+.wrap {
+  max-width: 1100px;
+  margin: 24px auto;
+  padding: 28px 36px 48px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #d8d2c4;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* ============== Typography ============== */
+h1, h2, h3, h4 {
+  font-family: "Times New Roman", Times, serif;
+  color: #1a1a1a;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+h1 {
+  font-size: 1.7em;
+  text-align: center;
+  text-decoration: underline;
+  margin-top: 0.6em;
+}
+
+h2 {
+  font-size: 1.35em;
+  text-align: center;
+  border-bottom: 2px solid #8a7a5a;
+  padding-bottom: 6px;
+  margin-top: 2em;
+}
+
+h3 {
+  font-size: 1.15em;
+  border-left: 4px solid #8a7a5a;
+  padding-left: 10px;
+  margin-top: 1.6em;
+}
+
+h4 {
+  font-size: 1.05em;
+  margin-top: 1.2em;
+}
+
+p { margin: 0.6em 0; }
+
+a {
+  color: #1a4d8f;
+  text-decoration: underline;
+}
+a:hover { color: #c0392b; }
+
+sup, sub { font-size: 0.75em; }
+
+/* ============== Header (profile) ============== */
+.profile {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.profile img {
+  width: 130px;
+  height: auto;
+  border: 1px solid #b9af95;
+  padding: 3px;
+  background: #fff;
+}
+
+.profile-info {
+  flex: 1;
+  min-width: 280px;
+}
+
+/* ============== Navigation ============== */
+.toc {
+  background: #f7f3e8;
+  border: 1px solid #c9bf9e;
+  padding: 14px 22px;
+  margin: 18px 0 28px;
+  font-size: 0.95em;
+}
+
+.toc strong { display: block; margin-bottom: 6px; }
+.toc ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 22px;
+}
+.toc ul li { display: inline-block; }
+
+/* ============== Data Block (résumé) ============== */
+.data-block {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 6px 18px;
+  margin: 14px 0 22px;
+}
+.data-block .label {
+  font-weight: bold;
+}
+.data-block .value {
+  word-wrap: break-word;
+}
+
+/* ============== Tables ============== */
+table {
+  border-collapse: collapse;
+  margin: 18px auto;
+  width: 100%;
+  max-width: 820px;
+  font-size: 0.95em;
+  background: #fff;
+}
+
+th, td {
+  border: 1px solid #b9af95;
+  padding: 7px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background: #ece4cf;
+  font-weight: bold;
+  text-align: center;
+}
+
+table.particles td:not(:first-child),
+table.particles th:not(:first-child) {
+  text-align: center;
+}
+
+table.freq td, table.freq th { text-align: center; }
+
+/* ============== Sections / cards ============== */
+section {
+  margin-bottom: 14px;
+}
+
+.callout {
+  background: #fbf6e6;
+  border-left: 4px solid #c0a060;
+  padding: 12px 16px;
+  margin: 14px 0;
+  font-size: 0.97em;
+}
+
+/* ============== Figures ============== */
+figure {
+  margin: 18px 0;
+  text-align: center;
+}
+figure img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #d8d2c4;
+  background: #fff;
+  padding: 4px;
+}
+figcaption {
+  font-size: 0.9em;
+  color: #555;
+  margin-top: 6px;
+  font-style: italic;
+}
+
+/* ============== Publications list ============== */
+.pub-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 14px 0;
+  columns: 1;
+}
+.pub-list li {
+  padding: 6px 8px;
+  border-bottom: 1px dotted #c9bf9e;
+}
+.pub-list li:last-child { border-bottom: none; }
+
+/* ============== Equations (inline math, plain HTML) ============== */
+.eq {
+  display: block;
+  text-align: center;
+  margin: 10px 0;
+  font-family: "Cambria Math", "Times New Roman", serif;
+  font-style: italic;
+}
+.sym { font-family: "Symbol", "Cambria Math", serif; font-style: normal; }
+
+/* ============== Footer ============== */
+footer {
+  margin-top: 36px;
+  padding-top: 14px;
+  border-top: 1px solid #c9bf9e;
+  font-size: 0.9em;
+  color: #555;
+  text-align: center;
+}
+
+/* ============== Responsive ============== */
+@media (max-width: 720px) {
+  .wrap { margin: 8px; padding: 18px; }
+  .data-block { grid-template-columns: 1fr; }
+  .data-block .label { margin-top: 8px; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  table { font-size: 0.85em; }
+  th, td { padding: 5px 6px; }
+}
+
+/* Back-to-top link */
+.back-top {
+  display: inline-block;
+  margin-top: 18px;
+  font-size: 0.85em;
+  font-style: italic;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+<!-- ============ HEADER ============ -->
+<header id="top">
+  <div class="profile">
+    <img src="Michael.jpg" alt="Photo of Viorel-Mihai Popescu">
+    <div class="profile-info">
+      <h1>Résumé</h1>
+      <p style="text-align:center; font-style:italic; margin-top:-6px;">
+        Viorel-Mihai Popescu — PhD candidate, independent theoretical-physics researcher
+      </p>
+    </div>
+  </div>
+</header>
+
+<!-- ============ TABLE OF CONTENTS ============ -->
+<nav class="toc" aria-label="Page contents">
+  <strong>Contents</strong>
+  <ul>
+    <li><a href="#cv">Personal data</a></li>
+    <li><a href="#schooling">Schooling &amp; experience</a></li>
+    <li><a href="#abstract-hg">Abstract — Mercury experiment</a></li>
+    <li><a href="#ideas">Four research ideas</a></li>
+    <li><a href="#gravity">Abstract — Gravity</a></li>
+    <li><a href="#qit">Quarks Informational Theory</a></li>
+    <li><a href="#particles">Particle quark table</a></li>
+    <li><a href="#interactions">Anti-gravity interactions</a></li>
+    <li><a href="#conclusions">Conclusions</a></li>
+    <li><a href="#publications">Publications &amp; documents</a></li>
+    <li><a href="#thanks">Acknowledgements</a></li>
+  </ul>
+</nav>
+
+<!-- ============ PERSONAL DATA ============ -->
+<section id="cv">
+<h2>Personal data</h2>
+
+<div class="data-block">
+  <div class="label">Name:</div>
+  <div class="value">POPESCU</div>
+
+  <div class="label">First name:</div>
+  <div class="value">VIOREL-MIHAI</div>
+
+  <div class="label">Birthday:</div>
+  <div class="value">the 6<sup>th</sup> of September 1962, Bucharest</div>
+
+  <div class="label">Country:</div>
+  <div class="value">Romania</div>
+
+  <div class="label">Marital status:</div>
+  <div class="value">Married, 2 children</div>
+
+  <div class="label">Address:</div>
+  <div class="value">272 Street Calea Moșilor, Bloc 16, Sc C, Ap 74, Bucharest 2</div>
+
+  <div class="label">Phone:</div>
+  <div class="value"><strong>Mob.: (+)40720-741265 &nbsp;</strong></div>
+
+  <div class="label">E-mail:</div>
+  <div class="value">
+    <a href="mailto:michaelvio@gmail.com">michaelvio@gmail.com</a> &middot;
+    <a href="mailto:michaelvio@yahoo.com">michaelvio@yahoo.com</a> &middot;
+    <a href="mailto:Viorel.popescu@stud.etti.upb.ro">Viorel.popescu@stud.etti.upb.ro</a>  &middot;
+	<a href="mailto:michaelvio@proton.me">michaelvio@proton.me</a></div>
+
+  <div class="label">ORCID:</div>
+  <div class="value"><a href="https://orcid.org/0000-0003-2358-489X">0000-0003-2358-489X</a></div>
+</div>
+</section>
+
+<!-- ============ SCHOOLING & EXPERIENCE ============ -->
+<section id="schooling">
+<h2>Schooling &amp; experience</h2>
+
+<h3>Schooling</h3>
+<p>The Polytechnic University of Bucharest, Automatics Department, Microprocessor section — graduate of July 1987.</p>
+
+<h3>Experience</h3>
+<div class="data-block">
+  <div class="label">Operating systems:</div>
+  <div class="value">MS-DOS, all Windows versions (server &amp; workstation), UNIX, Linux RedHat &amp; Slackware</div>
+
+  <div class="label">Hardware platforms:</div>
+  <div class="value">Intel PC</div>
+
+  <div class="label">Languages:</div>
+  <div class="value">Basic, Pascal, Fortran, SQL, Cobol</div>
+
+  <div class="label">Object-oriented:</div>
+  <div class="value">Progress, Visual Basic</div>
+
+  <div class="label">DBMS:</div>
+  <div class="value">xBase (FoxPro, dBase) — DOS &amp; Windows versions; Progress; MS Access</div>
+
+  <div class="label">Network:</div>
+  <div class="value">Novell NetWare 5; all Windows (NT, XP, 7, 8.1, 10, 11 — client or server)</div>
+
+  <div class="label">Other software:</div>
+  <div class="value">ProCom Plus, MS Word, MS Excel, MS Mail, Windows SDK, MS Access, Maple, Matlab, Origin</div>
+</div>
+
+<h3>Training courses</h3>
+<ul>
+  <li>System Engineer refresher course at <strong>“Centrul de Pregătire în Informatică”</strong> with <strong>Microsoft certification</strong>.</li>
+  <li>Hewlett Packard DeskJet, Professional DeskJet, Business LaserJet, Color LaserJet, OfficeJet Family &amp; Workgroup certification (HP PIN: <strong>1100011094</strong>).</li>
+</ul>
+
+<p class="callout">
+  <strong>Present:</strong> Retired. Former System Engineer at System PLUS, a Hewlett-Packard dealer. PhD candidate in opto-electronics.
+</p>
+</section>
+
+<!-- ============ ABSTRACT — MERCURY ============ -->
+<section id="abstract-hg">
+<h2>Abstract — Mercury nuclear-spin experiment</h2>
+
+<p>The experiment is based on the vibration of the atomic center in the crystal metallic lattice of a mercury sample, which is transferring over bonding electron orbital. If the atom is excited using the resonance phenomenon the link between the atomic center and electron can be broken and the conduction electron will make alternating current. Resonance frequency is 233 nm (2331.1 Å), which makes it possible to break the binding between the atomic center and the bonding electron by photons of the Louis de Broglie associated wavelength.</p>
+
+<p>The potential energy of the nuclear precession is:</p>
+<p class="eq">E = − <span class="sym">μ</span> B cos&nbsp;θ</p>
+<p>(θ is the angle between the direction of the applied field and the axis of nuclear rotation.)</p>
+
+<p>And the nucleus energy is:</p>
+<p class="eq">E = <span class="sym">γ</span> h B / 2<span class="sym">π</span></p>
+
+<p>The constant <span class="sym">γ</span> is called the <em>gyromagnetic ratio</em> and is a fundamental nuclear constant with a different value for every nucleus. <em>h</em> is Planck's constant and <em>B</em> is the strength of the magnetic field <strong>at the nucleus</strong>.</p>
+
+<p>From tables, Hg(201): <span class="sym">γ</span> = −1.7686·10<sup>7</sup> rad T<sup>−1</sup> s<sup>−1</sup>; and B<sub>2</sub> = 4.2·10<sup>14</sup> T (magnetic field in the nucleus).</p>
+
+<p>The total energy (in Joule) is:</p>
+<p class="eq">E = <span class="sym">γ</span> · B<sub>2</sub> · I · (1−I) · ℏ</p>
+
+<p>where <em>I</em> is the magnetic spin moment and <em>B</em> lies between (4.2 – 8.2)·10<sup>14</sup> T — the intensity of the nucleus magnetic field. For eV, multiply by 6.24·10<sup>18</sup>.</p>
+
+<p>For Hg(201):</p>
+<p class="eq">E = <span class="sym">γ</span> · B<sub>2</sub> · I · (1−I) · ℏ = −1.7776·10<sup>7</sup> · (−3/4) · 3.54·10<sup>14</sup> · 1.0544·10<sup>−34</sup> · 6.24·10<sup>18</sup> = 3.685371 MeV</p>
+
+<p>Results obtained:</p>
+<ul>
+  <li>E = 3.68·10<sup>6</sup> eV = 3.68 MeV for Hg(201)</li>
+  <li>E = 3.32 MeV for Hg(199)</li>
+  <li>E = 3.9 MeV for Pb(207)</li>
+  <li>E = 6.62 MeV for Sn(117)</li>
+  <li>E = 5.8 MeV for Sn(119)</li>
+  <li>E = 6.92 MeV…</li>
+</ul>
+
+<p>The calculation of the amount of energy generated comes from the energy released by the nuclear spin magnetic moment: I = 3/2 for Hg201 gives <strong>~3.68 MeV</strong> (13.2% natural abundance); Hg199 gives <strong>~3.33 MeV</strong> with I = 1/2 (16.8% natural abundance). We obtain E = N · (3.68 MeV · 0.132 + 3.33 MeV · 0.168) · 1.602·10<sup>−19</sup> C ⇒ <strong>E = 5.091·10<sup>11</sup> J</strong>, where N is the number of atoms in 1 kg of Hg. With Avogadro's number, 6.022·10<sup>23</sup> atoms are contained in 200.59 g of mercury (density 13600 kg/m³) — thus 3.0022·10<sup>24</sup> atoms in 1 kg. The mass is m = 0.0024·m<sub>n</sub> of the neutron mass, very close to the mass defect. Because this frequency is in UV, we must build a quartz cylinder filled with mercury (dimensions in mm):</p>
+
+<figure>
+  <img src="Image14.gif" width="576" height="229" alt="Quartz cylinder schematic — dimensions in mm">
+  <figcaption>Quartz cylinder filled with mercury — experimental setup.</figcaption>
+</figure>
+
+<p>With LASER it is possible to obtain a gain of power (the electrical power of the laser will be less than the one produced by the instrument — greater than ~10 times — but it is essential to have larger power). The stability of the frequency of the electric sinusoid produces in copper conductor a resistance about ~60 times less than the usual resistance, achieving relative superconductivity at normal temperature (~24 °C). I tried to reproduce the same frequency with an electric oscillator, but the phenomenon did not appear; I believe the stability must be several orders greater (~10<sup>−8</sup>), and only at that precise frequency does superconductivity appear.</p>
+
+<figure>
+  <img src="testS450.jpg" width="403" height="301" alt="Experimental test setup">
+</figure>
+
+<p align="center"><strong><a href="abstract.htm">→ Full Abstract document</a></strong></p>
+
+<h3>Tin–lead alloy variant</h3>
+<p>Another metal suitable for energy production is the tin alloy; the frequency is 336–338 nm depending on the temperature of the liquid or solid state. The metal composition is 87% Sn (tin) and 13% Pb (lead). Best energy is obtained above 246 °C in the liquid state.</p>
+
+<p>For a eutectic tin alloy (61.9% Sn, 38.1% Pb) the scheme is the same as for Hg with a 337.5 nm wavelength. Energy released from the nuclear spin magnetic moment: E = 3.9 MeV for Pb207 (22.1% natural abundance); E = 6.62 MeV for Sn117 (7.68%); E = 6.92 MeV for Sn119 (8.59%). We may approximate Sn(117+119) (16.6% with mean E = 6.78 MeV):</p>
+
+<p class="eq">E = N₁ · 0.166 · 6.78 MeV · 1.602·10<sup>−19</sup> C + N₂ · 3.9 MeV · 0.221 · 1.602·10<sup>−19</sup> C = <strong>1.1·10<sup>10</sup> J</strong> for 1 kg of tin alloy</p>
+
+<p>where N₁ = 4.751·10<sup>22</sup> is the number of Sn(117+119) atoms within 1 kg of alloy and N₂ = 2.33·10<sup>22</sup> is the number of Pb atoms. The problem is that the frequency differs from 10.5 kHz and superconductivity will not appear, but the stability is the same as with Hg and may be tuned via resonance compartment waves to a frequency that realizes relative superconductivity at normal temperature (~24 °C).</p>
+
+<p>See the page: <a href="GyroMag.pdf">GyroMag.pdf</a>.</p>
+
+<p>According to QIT, the frequency of interaction of magnetron and optoelectron is 940–650 MHz; the magnetron interacts with mercury and tin alloy at the most probable frequencies <strong>939.494691 MHz</strong> for Hg and <strong>647.6398312 MHz</strong> for SnPb. The experiment can be performed with microwaves, but the stability of the electric sinusoid is not suitable for superconductivity — it is variable in the range of dozens to hundreds of Hz. A microwave oven works at ~16 GHz with 700–1000 W power for under $100, so it is a cheap energy solution with a multiplication factor of a few dozens to hundreds. The phenomenon is based on the resonance between the magnetron and the optoelectron particle (per Quarks Informational Theory).</p>
+
+<figure>
+  <img src="precess.gif" width="235" height="350" alt="Nuclear precession diagram">
+</figure>
+
+<figure>
+  <img src="Image15.gif" width="576" height="248" alt="Energy diagram">
+</figure>
+</section>
+
+<!-- ============ IDEAS ============ -->
+<section id="ideas">
+<h2>Four research ideas</h2>
+
+<h3>1. High-frequency microchips via UV laser exposure</h3>
+<p>Realize microchips of 5–10 GHz by exposing the silicon circuit to a LASER diode of 760 nm at powers over (5 mW + 1 mW/mm²) of the silicon surface, in a 0.2–2 nm technology containing 10–900 billion transistors per slice. The whole computer can be made on a single microchip (microprocessor, motherboard, video card, network and sound card), with the advantage that the data and address bus can work at higher frequency (performance at low cost).</p>
+
+<h3>2. Corona-effect friction reduction</h3>
+<p>Use the Corona phenomenon to decrease air friction up to ~10 times by creating a cushion of ionized air. This appears at voltages up to 3 000 000 V (working up to 5 000 000 V, ideally over 9 000 000 V, AC or DC). The entry angle into the atmosphere of rockets can rise from 2.5° up to 10× and the speed limit up to 3× with this voltage. The sonic boom is drastically reduced.</p>
+
+<figure>
+  <img src="avion.gif" width="303" height="219" alt="Corona-discharge applied to wings — US patent figure">
+</figure>
+
+<h3>3. Anti-gravity by photon–graviton resonance</h3>
+<p>Realize anti-gravity with a ~31 Å (30.8 Å) laser beam in a range of ±1% placed perpendicular to the Earth in the direction of a small object. The phenomenon also appears for a ~381 nm (3804.3 Å, E = 3.259 eV) laser beam in the range 380.43 nm ±1%, easier to obtain with a new LASER based on freon (CFC Cl<sub>2</sub>F<sub>2</sub>C) and any element of the 8<sup>th</sup> group (He, Ne, Ar, Kr, Xe, Rn). The wavelength can be modified in the range ~250–500 nm by changing the noble gas. The laser beam must be opposite to gravity and must have a minimal intensity per surface depending on the mass. Microwaves at 575.417 MHz or ~16.1 GHz can also generate antigravity, but require very stable electromagnetic waves of stability ~10<sup>−8</sup>.</p>
+
+<h3>4. Stopping time for a discrete region of space</h3>
+<p>According to Quarks Informational Theory, it is possible to interact with the quark Time using an elementary particle containing this quark: photon, phonon or Gamma-Ray particle. The easiest way is photon interaction with LASER at ~313.5 nm and ~30.75 Å, but with higher intensity. The required laser-beam power is at least 35 mW/g (for a 20 g watch this means &gt;700 mW). The experiment: cover a small watch (electronic or mechanical) entirely with the laser beam and modify the wavelength in 313.5 nm ±1% until the watch stops. The photon energy E = h<span class="sym">ν</span> and the Temporal Ionized Energies are E<sub>T1</sub> = 3.95 eV and E<sub>T2</sub> = 3.95 eV at λ = 3.083 nm (Planck's law modified). The power to sustain 1 kmol of substance is ~3.3 kW (typically 3 – 3.6 kW/kmol). Radio waves at 697.1917627 MHz with very stable electromagnetic waves (Δf/f ~ 10<sup>−8</sup>) can generate a Temporal Ionized State.</p>
+
+<p class="callout">
+  Practically: cheese in the fridge keeps for days; in a freezer, months; if time is stopped for that piece of cheese, it can be preserved with its initial properties for about a million years, depending on energy provided.
+  <br><br>
+  <strong>“The moment that flows gives time; the moment that stands gives eternity.”</strong>
+  <br><br>
+  WHAT IS TIME (short answer): Time is an <em>informational quark</em> — the flux of Tau neutrino, not a river that flows, not entropy. As Einstein said: <em>“Time is what keeps everything from happening at the same time.”</em> See Feynman: <a href="https://www.youtube.com/watch?v=zUHtlXA1f-w">YouTube video</a>.
+</p>
+</section>
+
+<!-- ============ ABSTRACT GRAVITY ============ -->
+<section id="gravity">
+<h2><a href="abstractG.htm" style="text-decoration:none; color:inherit;">Abstract — Gravity</a></h2>
+
+<p>The Ondusculaire theory refers to elementary particles with no mass moving at the speed of light, acting as both wave and particle: <em>phonon, particle<sub>T</sub>, photon, graviton, magnetron, particle<sub>M</sub></em> — and particles with mass moving slower than light (atomic nuclei, positron, electron). The Ondusculaire equation can be obtained starting from the generalized relativistic Onduscular formula:</p>
+
+<figure>
+  <img src="Gravit81.gif" width="480" height="48" alt="Generalized onduscular formula equation 1">
+  <figcaption>Eq. (1) — generalized relativistic onduscular formula.</figcaption>
+</figure>
+
+<p>where <em>m</em> is the moving mass, <em>V</em> is the speed, <em>f</em> is the wave function, <em>E₀</em> is the energy in Rydberg units, <em>l</em> is the azimuthal magnetic number, <em>ε</em> is the vacuum permittivity and ℏ the normed Planck constant. <em>R</em> is a constant distance (<strong>R = 3.9228·10<sup>22</sup> m</strong>) for the particles graviton, particula<sub>T</sub>, magnetron, photon and phonon — where the rest mass m₀ = 0.<a href="RelatCorrect.pdf"> Relativity correction.</a> </p>
+<p> <strong><em>Orbital Equilibrium of Helium’s Two  Electrons Under the Heisenberg Uncertainty Principle — Schrödinger  vs.&nbsp;TauTimp Ondulatory Equation Comparison, with Rigorous Relativistic  Correction and the Multi-Body Extension</em></strong> <a href="HeliuEch2electr.pdf">HeliuEch2electr.pdf</a></p>
+<p><strong><em>Schrödinger vs.&nbsp;the Relativistic  TauTimp Ondulatory Equation: Comparative Synthesis for H, He, Li, Be, B, C</em> =&gt; </strong><a href="SchrodTauTimp.pdf">SchrodTauTimp.pdf </a></p>
+<p>According to <a href="grav.pdf">The Graviton Equation document</a>, the Neutrino is the graviton; the amplitude in spherical coordinates is given in <a href="GravitonPaper.pdf">The Graviton's Equation Document (PDF)</a>.</p>
+
+<p>With <em>k</em>, <em>_c<sub>1</sub></em> &lt; 0, <em>R</em> &gt; 0 real constants and <em>c</em> the speed of light, applying the Dirichlet condition a(2R, t) = 0 we recover Newton's law of gravity — see the <a href="graviton.png">graviton plot</a> with R = 37, c = 3.</p>
+
+<figure>
+  <img src="graviton.png" width="400" height="400" alt="Graviton amplitude in spherical coordinates">
+  <figcaption>Graviton amplitude in spherical coordinates.</figcaption>
+</figure>
+
+<p>The amplitude of the photon in cylindrical coordinates (<a href="photon.pdf">Photon.pdf</a>) is:</p>
+
+<figure>
+  <img src="unititled.png" width="400" height="400" alt="Photon amplitude in cylindrical coordinates"></figure>
+
+<p>The proton will decompose into a neutron and a positron and will generate a Neutrino which provides gravity and will interact with other nuclei. The light can stop the reaction in the nucleus if it absorbs a certain amount of the energy E = h<span class="sym">ν</span>.</p>
+
+<p>The atomic reaction generating the neutron, positron and Muon Neutrino is:</p>
+<p class="eq"><sup>1</sup><sub>1</sub><strong>p</strong> + <span class="sym">τ</span> → <sup>1</sup><sub>0</sub><strong>n</strong> + <sup>0</sup><sub>+1</sub><strong>pos</strong> + <span class="sym">ν</span> + <strong>Muon Neutrino</strong></p>
+
+<p>The Electronic Neutrino is responsible for the attraction of mass; the process repeats whenever the proton is hit by the tau neutrino. The neutron and tau neutrino regenerate a proton, electron, muon neutrino and electronic neutrino:</p>
+<p class="eq"><sup>1</sup><sub>0</sub><strong>n</strong> + <span class="sym">τ</span> → <sup>1</sup><sub>1</sub><strong>p</strong> + <sup>0</sup><sub>−1</sub><strong>e</strong> + <span class="sym">ν</span> + <strong>Muon Neutrino</strong></p>
+
+<p>The nucleus vibrates into orbital and absorption of the same energy E<sub>1ω</sub> = 3.259 eV will become Gravitonically Ionized: h<span class="sym">ν</span> = E<sub>ω</sub> → λ = 3.08 nm → ~30.8 Å. Planck's law is modified, so the energy for the frequency 380.43 nm is E<sub>2ω</sub> = 3.259 eV — the Gravitonic Ionized State.</p>
+
+<p>The calculation of the power needed to sustain 1 g of substance is based on the assumption that the light ionizes all atoms but does not penetrate more than several microns — farther propagation occurs by photonic scattering coupled with a sort of photovoltaic phenomenon, in which the incident photon gravitonically ionizes the atom which, through stimulated emission, produces a particle identical to the incident photon (Einstein's photoelectron).</p>
+
+<p>Earth–body interaction at the surface: with Earth diameter ~12 742 km and interaction traveling at c ~ 300 000 km/s, we get T = 4.25·10<sup>−2</sup> s, allowing us to calculate the power needed to sustain one gram of mercury (and approximately the same for aluminum). The gravitons that might be stopped traveling through Earth to the contact and antipodal points must be blocked for ~4 hundredths of a second; the laser power must therefore be proportional to Earth's diameter. On the Moon (diameter 3472 km), about 0.8 W/mol would suffice — about a quarter of Earth's requirement, not one-sixth (Moon gravity ~1.6 m/s²). Direct lunar verification would be needed.</p>
+
+<p>Using Brossel's double-resonant method 'Investigating Atomic Energy Levels' for Hg, where the transition from excited to unexcited state is ~4·10<sup>−7</sup> s, our interaction time is t = 4·10<sup>−7</sup> s. The laser must supply power to block gravitons for N = T/t time quanta ≈ 10<sup>5</sup>. Thus:</p>
+
+<p class="eq">E<sub>atom</sub> = 3.26 [eV] · 1.602·10<sup>−19</sup> [C] = 5.22·10<sup>−19</sup> [J]<br>
+P<sub>atom</sub> · T/t [W·s] = E<sub>atom</sub> [J]<br>
+N = T/t = 1.0625·10<sup>5</sup><br>
+P<sub>atom</sub> ≈ 4.912·10<sup>−24</sup> W/atom</p>
+
+<p>By Avogadro: 6.022·10<sup>26</sup> atoms/mol in 200.6 kg of Hg (density 13 600 kg/m³) → 3·10<sup>21</sup> atoms in a gram. The needed light power is:</p>
+
+<p class="eq">P<sub>Hg(g)</sub> = 0.491·10<sup>−23</sup> · 3·10<sup>21</sup> J/s = 14.74·10<sup>−3</sup> J/s per g</p>
+
+<p>So ~0.01474 W/g (14.7 mW/g) for Hg, ~2.948 W/mol. For Al (atomic mass 27), P<sub>Al(g)</sub> = 109.2 mW/g — though the phenomenon is more complex.</p>
+
+<p>Between two Time Quanta, the spin = ½ electron performs a double spin rotation (720°) and reaches the same relative position with respect to the degrees of freedom in space (extends to any ½-spin particle):</p>
+
+<figure>
+  <img src="main-qimg.gif" width="220" height="220" alt="Spin double rotation 720 degrees animation"></figure>
+
+<h3>A new LASER concept</h3>
+<p>A new LASER with the same power as the CO<sub>2</sub> one, in the UV range 250 nm – 500 nm, based on freon (CFC Cl<sub>2</sub>F<sub>2</sub>C) &amp; Helium (or any 8<sup>th</sup>-group element: He, Ne, Ar, Kr, Xe, Rn) can be built with similar parameters as CO<sub>2</sub>. The LASER has the same basic function as molecular N<sub>2</sub>. CO<sub>2</sub> is similar to CFC + He; by changing the 8<sup>th</sup>-group element one modifies the optical power and the wavelength in the range ~250 nm – 500 nm.</p>
+
+<p>Conditions for laser action with Cl<sub>2</sub>F<sub>2</sub>C and He are met:</p>
+<ol>
+  <li>There must be an inverted population (more atoms in the excited state than in the ground state).</li>
+  <li>The excited state must be metastable.</li>
+  <li>The emitted photons must stimulate further emission.</li>
+</ol>
+
+<figure>
+  <img src="Lasere.jpg" width="592" height="290" alt="Laser configurations and parameters"></figure>
+</section>
+
+<!-- ============ QUARKS INFORMATIONAL THEORY ============ -->
+<section id="qit">
+<h2><a href="Tinfor.pdf" style="text-decoration:none; color:inherit;">Quarks Informational Theory (QIT)</a></h2>
+
+<p>There are 6 informational quarks: <strong>mass (M), magnetic (Mg), electricity (E), gravity (G), light (L) and time (T)</strong>. A particle is always composed of three informational quarks. Two particles may interact if they are neighbouring for at least a Quanta of time, and exchange information. If the sum of interactions for a quark type is 0, another quark may appear; the stable configuration of a new particle consists of three quarks.</p>
+
+<p>The informational quarks correspond to the known quarks as follows:</p>
+<ul>
+  <li>Light = Up Quark; Magnetic field = Down Quark</li>
+  <li>Gravity = Charm Quark; Electricity = Strange Quark</li>
+  <li>Time = Top Quark; Mass = Bottom Quark</li>
+</ul>
+</section>
+
+<!-- ============ PARTICLE TABLE ============ -->
+<section id="particles">
+<h3>Informational composition of particles</h3>
+
+<table class="particles" aria-label="Informational quark composition of particles">
+  <thead>
+    <tr>
+      <th>Particle</th>
+      <th>M</th>
+      <th>M<sub>g</sub></th>
+      <th>E</th>
+      <th>G</th>
+      <th>L</th>
+      <th>T</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Electron</td><td>1</td><td>1838</td><td>−1</td><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>Positron</td><td>1</td><td>−1838</td><td>+1</td><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>Monopole RadioFreq / Microwave</td><td>0 / 0</td><td>1.913 / 1.913</td><td>0 / 0</td><td>0 / 1</td><td>1 / 0</td><td>1 / 1</td></tr>
+    <tr><td>Graviton = ν neutrino</td><td>0</td><td>−1838</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+    <tr><td>Particle P</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+    <tr><td>Particle M</td><td>1</td><td>0</td><td>0</td><td>−1</td><td>1</td><td>0</td></tr>
+    <tr><td>Phonon</td><td>0</td><td>0</td><td>0</td><td>−1</td><td>−1</td><td>1</td></tr>
+    <tr><td>Photon (Light)</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td></tr>
+    <tr><td>Particle <sub>Time</sub> = τ neutrino</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td></tr>
+    <tr><td>Particle <sub>Gamma</sub> (γ-ray)</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>−1</td></tr>
+  </tbody>
+</table>
+
+<p><strong>Sign conventions.</strong> A negative magnetic field means the magnetic field is opposite to the spin. A positive time means the propagation speed is the speed of light (3·10<sup>8</sup> m/s); a negative time means transfer almost instantly (~3·10<sup>17</sup> m/s) — Gamma-ray communication is suitable for long inter-planetary distances. Positive gravity is attraction, negative gravity is repulsion. Positive light is emission, negative light is absorption. Mass is always positive in the local universe.</p>
+
+<figure>
+  <img src="Onde_transver.gif" width="305" height="231" alt="Transversal wave propagation at the speed of light">
+  <figcaption>Transversal wave — propagation at the speed of light.</figcaption>
+</figure>
+<figure>
+  <img src="Onde_longitud.gif" width="305" height="231" alt="Longitudinal wave with finite propagation velocity">
+  <figcaption>Longitudinal wave — finite propagation velocity.</figcaption>
+</figure>
+</section>
+
+<!-- ============ INTERACTIONS ============ -->
+<section id="interactions">
+<h3>Anti-gravity interactions: graviton coupling with other micro-particles</h3>
+<p>Values must be at least 6–7 digits exact and the frequency stability the same as a laser (Δf/f ~ 10<sup>−8</sup>, as obtained for some typical CO<sub>2</sub> laser lines over a 1-hour recording).</p>
+
+<table class="freq" aria-label="Graviton interactions with other particles">
+  <thead>
+    <tr><th>Interaction pair</th><th>Frequency #1</th><th>Frequency #2</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Photon &amp; Graviton</td><td>380.4 nm</td><td>30.8 Å</td></tr>
+    <tr><td>Graviton &amp; Phonon</td><td>432 Hz</td><td>25.6 kHz</td></tr>
+    <tr><td>Phonon &amp; Particle <sub>Time</sub></td><td>528 Hz</td><td>25.8 kHz</td></tr>
+    <tr><td>Magnetron &amp; Graviton</td><td>575 MHz</td><td>30 GHz</td></tr>
+  </tbody>
+</table>
+</section>
+
+<!-- ============ CONCLUSIONS ============ -->
+<section id="conclusions">
+<h2>Conclusions</h2>
+<ul>
+  <li>The onduscular theory includes Newton's laws and Einstein's general relativity.</li>
+  <li>The Theory of Information (Quarks) includes the main fundamental particles of the Standard Model — also gravity, which gives another informational perspective and understanding of quarks.</li>
+  <li>The theory incorporates the classical-quantum theory; the Quantum Torsion Field equation gives a unique formula for all known particles.</li>
+  <li>It explains all known forces, from the atomic level to that of the Local Universe, and the operation mechanisms of force-mediating particles of these interactions.</li>
+  <li><strong>I)</strong> The onduscular equation provides an epistemic description of reality with real values.</li>
+  <li><strong>II)</strong> It is not a part of reality itself, but a mathematical tool.</li>
+  <li><strong>III)</strong> Its role is to describe and correctly predict the behaviour of reality with real values (not complex), over an extended spatial domain — closer to reality than the Schrödinger equation with complex values.</li>
+</ul>
+
+<p class="callout">
+  Please send your opinion by e-mail:
+  <a href="mailto:Viorel.popescu@stud.etti.upb.ro">Viorel.popescu@stud.etti.upb.ro</a> &nbsp;and&nbsp;
+  <a href="mailto:michaelvio@yahoo.com">michaelvio@yahoo.com</a>
+</p>
+</section>
+
+<!-- ============ PUBLICATIONS ============ -->
+<section id="publications">
+<h2>Publications &amp; documents</h2>
+
+<p>For the latest update, see <a href="http://www.michaelvio.byethost8.com"></a></p>
+
+<h3>Core theory papers</h3>
+<ul class="pub-list">
+  <li><a href="Cvbrit.pdf">Curriculum Vitae</a> (PDF)</li>
+  <li><a href="Supposition.pdf">The Suppositions that I make in the papers</a> (PDF)</li>
+  <li><a href="Tinfor.pdf">The Theory of Information (Quarks)</a> (PDF)</li>
+  <li><a href="ondusculEn.pdf">The Onduscular Theory</a> (PDF, English)</li>
+  <li><a href="onduscular.pdf">Onduscular Theory — Romanian (obsolete page)</a> (PDF)</li>
+  <li><a href="SynchronFieldTh.pdf">The Synchronous Field Theory &amp; Generalized Lorentz transforms</a> (PDF)</li>
+</ul>
+
+<h3>Graviton, photon &amp; particle equations</h3>
+<ul class="pub-list">
+  <li><a href="grav.pdf">The Graviton &amp; PartT equations</a> (PDF)</li>
+  <li><a href="TauNeut.pdf">The PartT equations</a> (PDF)</li>
+  <li><a href="photon.pdf">The Photon equations</a> (PDF)</li>
+  <li><a href="grav.pdf">The Graviton equations</a> (Maple)</li>
+  <li><a href="photon.mw">The Photon equations</a> (Maple)</li>
+  <li><a href="grav.rar">The Graviton, Photon and Electron Equations</a> archive (.rar, Maple)</li>
+  <li><a href="GravitonPaper.pdf">The Graviton's Equation</a> (PDF) &middot; <a href="Video.mp4">Video.mp4</a> &middot; <a href="Video.avi">Video.avi</a></li>
+</ul>
+
+<h3>Foundational documents</h3>
+<ul class="pub-list">
+  <li><a href="TOnduscular.pdf">Schrödinger and onduscular equations — inference</a> (PDF)</li>
+  <li><a href="QFT.pdf">Quantum Torsion Field Theory</a> (PDF)</li>
+  <li><a href="T&amp;SQ.pdf">The Time, Mass &amp; Space Quantum Theory</a> (PDF)</li>
+  <li><a href="Entropy.pdf">The Entropy and time evolution</a> (PDF)</li>
+  <li><a href="Heisenberg.pdf">Heisenberg's uncertainty principle</a> (PDF)</li>
+  <li><a href="Hologram.pdf">The Reality Hologram</a> (PDF)</li>
+  <li><a href="RedShift.pdf">The Red Shift</a> (PDF)</li>
+  <li><a href="EQFM.pdf">The Ether, the Quantum (Torsion) Field &amp; the Mass</a> (PDF)</li>
+  <li><a href="Planck.pdf">The modified Planck–Einstein law E = h<span class="sym">ν</span></a> (PDF)</li>
+  <li><a href="DBrog.pdf">The modified De Broglie law</a> (PDF)</li>
+  <li><a href="QSpaceBH.pdf">The Primordial initial Black Hole and Quantum Space curvature</a> (PDF)</li>
+  <li><a href="Nucleus.pdf">The Nucleus Neutrino Interactions</a> (PDF)</li>
+  <li><a href="LagrangianQED.pdf">The Lagrangian QED &amp; forces interactions between particle</a> (PDF)</li>
+  <li><a href="CosmoLMP.pdf">The Cosmology of Local Universe and the "measurement problem"</a> (PDF)</li>
+  <li><a href="ElecEcuat.pdf">The Electron 1S Hydrogen Flux Equation &amp; explication</a> (PDF)</li>
+  <li><a href="orbitaliTauTimp.SPDF.html">The Electron's orbital Schrodinger  &amp; Unduscular dinamic view</a></li>
+  <li><a href="FeynmanD3metod.pdf">The Electromagnetic Interaction QED, Dual QED (Zwanziger),  &amp; unduscular Monopole </a> (PDF)</li>
+  <li><a href="Flux.pdf">The flux conservation equation</a> (PDF)</li>
+  <li><a href="Vac.pdf">The Gravitational Field &amp; The Vacuum Energy</a> (PDF)</li>
+  <li><a href="Maxwell.pdf">The Maxwell's generalized equation</a> (PDF)</li>
+  <li><a href="SpaceExSun.pdf">The Sun &amp; Earth space expansion</a> (PDF)</li>
+  <li><a href="QuEnWaPart.pdf">About Quarks, Entanglement, and Wave-Particle duality</a> (PDF)</li>
+  <li><a href="AndrewT.pdf">Wheeler's delayed-choice entanglement &amp; Transactional Interpretation of QM</a> (PDF)</li>
+  <li><a href="SpinPEN.pdf">The electron, proton &amp; neutron — are they actually spinning or not?</a> (PDF)</li>
+  <li><a href="Magnet.pdf">The magnetron in the interaction between electron and proton</a> (PDF)</li>
+  <li><a href="MarsE.pdf">The time shift between Mars and Earth — calculus equation of time</a> (PDF)</li>
+  <li><a href="QmSp-TBend.pdf">The Quantum Space-Time bend of special relativity in Riemann multidimensional space</a> (PDF)</li>
+  <li><a href="OndSLP.pdf">The R constant distance value &amp; the change of variable from Schrödinger to QFT</a> (PDF)</li>
+  <li><a href="MaxRadius.pdf">The maximum radius of the Local Universe (MaxRadius.pdf)</a></li>
+  <li><a href="Gamma.pdf">Gamma Ray Gamma</a> (PDF)</li>
+  <li><a href="TimpInter.pdf">How does an electron not fall on the nucleus</a> (PDF)</li>
+</ul>
+
+<h3>Patents &amp; awards</h3>
+<ul class="pub-list">
+  <li>The inventions are protected by international law — see <a href="http://www.osim.ro">http://www.osim.ro</a></li>
+  <li><a href="ProgList.pdf">The Program's Files list</a> (PDF)</li>
+  <li><a href="Gravitatie.pdf">OSIM Patent — Gravity</a></li>
+  <li><a href="EnergyHg.pdf">OSIM Patent — Energy Hg</a></li>
+  <li><a href="DiplomaMedalieAurPopescuViorel-Mihai.pdf">Gold Medal at UPB Inventica 2005 — Energy Hg</a></li>
+</ul>
+
+<h3>Social</h3>
+<ul class="pub-list">
+  <li>Facebook: <a href="https://www.facebook.com/popescu.viorelmihai">facebook.com/popescu.viorelmihai</a></li>
+</ul>
+</section>
+
+<!-- ============ THANKS ============ -->
+<section id="thanks">
+<h2>Acknowledgements</h2>
+<p>Thanks to my teachers: Prof. Dr. <strong>Doina Mănăilă-Maximean</strong>, my PhD supervisor at U.P. Bucharest, Faculty of Applied Science; Prof. Dr. <strong>Paul Sterian</strong> (my former PhD supervisor, R.I.P.); Prof. <strong>Paul Flondor</strong> (R.I.P.); Prof. <strong>V. Brânzănescu</strong>; Prof. <strong>Romeo Bercia</strong>; Prof. <strong>Laurențiu Fara</strong> (R.I.P.); and Prof. <strong>Iordache Dan</strong> (my physics teacher in college, R.I.P.) — who guided me through the research at U.P. Bucharest — and to Prof. Dr. <strong>David Harrington</strong> from the University of Victoria, British Columbia, Canada.</p>
+<p>And especially to Prof. Dr. <strong>Rostamian</strong> from Brown University / UMBC Baltimore, USA.</p>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <p>Last update 13 Sep. 2026 &middot; Version 13.15.93 &middot; <a href="https://orcid.org/0000-0003-2358-489X">ORCID: 0000-0003-2358-489X</a></p>
+  <p><a href="#top" class="back-top">↑ Back to top</a></p>
+</footer>
+
+</div><!-- /.wrap -->
+
+</body>
+</html>
